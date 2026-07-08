@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Untuk Nadia 💕</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FFF8F5;
+    --petal-pink: #FFC2D9;
+    --rose-bloom: #FF8FB3;
+    --deep-rose: #FF5D94;
+    --berry: #E0417A;
+    --plum-text: #6B3352;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    color: var(--plum-text);
+    background: linear-gradient(135deg, #ffe3ec, #ffc9de, #ffd9e8, #ffeaf2);
+    background-size: 300% 300%;
+    animation: bgShift 14s ease infinite;
+  }
+
+  @keyframes bgShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  button, a { font-family: inherit; }
+
+  :focus-visible {
+    outline: 2px solid var(--berry);
+    outline-offset: 3px;
+  }
+
+  /* ===================== SCREENS ===================== */
+  .screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 24px;
+    text-align: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  .screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* ===================== FALLING PETALS (ambient thread across all screens) ===================== */
+  #petals-container {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .petal {
+    position: fixed;
+    top: -8%;
+    z-index: 999;
+    line-height: 1;
+    user-select: none;
+    filter: drop-shadow(0 0 6px rgba(255,140,190,0.55));
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+  @keyframes fall {
+    0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+    50%  { transform: translate(calc(var(--drift) * 0.5), 55vh) rotate(calc(var(--spin) * 0.5)) scale(1.15); }
+    100% { transform: translate(var(--drift), 120vh) rotate(var(--spin)) scale(0.9); }
+  }
+
+  .sparkle {
+    position: fixed;
+    z-index: 998;
+    pointer-events: none;
+    animation: twinkle linear forwards;
+  }
+  @keyframes twinkle {
+    0%   { opacity: 0; transform: scale(0) rotate(0deg); }
+    50%  { opacity: 1; transform: scale(1.3) rotate(90deg); }
+    100% { opacity: 0; transform: scale(0.2) rotate(180deg); }
+  }
+
+  .rising-heart {
+    position: fixed;
+    bottom: -10%;
+    z-index: 997;
+    pointer-events: none;
+    filter: drop-shadow(0 0 8px rgba(255,93,148,0.5));
+    animation-name: rise;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+  }
+  @keyframes rise {
+    0%   { transform: translate(0, 0) scale(0.6); opacity: 0; }
+    15%  { opacity: 0.9; }
+    100% { transform: translate(var(--driftx), -120vh) scale(1.1); opacity: 0; }
+  }
+
+  .confetti-piece {
+    position: fixed;
+    top: -5%;
+    z-index: 996;
+    pointer-events: none;
+    border-radius: 2px;
+    animation-name: confettiFall;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+  }
+  @keyframes confettiFall {
+    0%   { transform: translate(0,0) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--cdrift), 110vh) rotate(var(--cspin)); opacity: 0.9; }
+  }
+
+  .burst-heart {
+    position: fixed;
+    z-index: 1000;
+    line-height: 1;
+    pointer-events: none;
+    animation: burstAnim 0.9s ease-out forwards;
+  }
+  @keyframes burstAnim {
+    0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+    100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.3); opacity: 0; }
+  }
+
+  /* ===================== LOADING SCREEN ===================== */
+  .loader-heart {
+    font-size: 62px;
+    margin-bottom: 22px;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.22); }
+  }
+  .progress-bar-wrap {
+    width: min(300px, 78vw);
+    height: 14px;
+    background: rgba(255,255,255,0.55);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 16px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--rose-bloom), var(--deep-rose));
+    transition: width 25s cubic-bezier(.1,.7,1,.1);
+  }
+  .loading-text {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: #b04570;
+    min-height: 20px;
+    transition: opacity 0.3s ease;
+  }
+
+  /* ===================== POPUP ===================== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: rgba(122,43,77,0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  .modal-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .modal-card {
+    background: var(--cream);
+    border-radius: 24px;
+    padding: 34px 26px;
+    max-width: 300px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(224,65,122,0.35);
+    animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes popIn {
+    0% { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .modal-icon { font-size: 34px; margin-bottom: 10px; }
+  .modal-card h2 {
+    font-size: 18.5px;
+    font-weight: 600;
+    color: #c23d72;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .modal-sub { font-size: 13px; color: #a8567c; margin-bottom: 22px; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--rose-bloom), var(--deep-rose));
+    color: white;
+    border: none;
+    padding: 12px 26px;
+    border-radius: 30px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    touch-action: manipulation;
+    box-shadow: 0 8px 20px rgba(255,93,148,0.4);
+    transition: transform 0.2s ease;
+  }
+  .btn-primary:hover { transform: scale(1.05); }
+  .btn-primary:active { transform: scale(0.96); }
+
+  /* ===================== ENVELOPE SCREEN ===================== */
+  .screen-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(26px, 6vw, 34px);
+    color: #c23d72;
+    margin-bottom: 30px;
+  }
+  .hint-text {
+    margin-top: 22px;
+    font-size: 13.5px;
+    color: #a8567c;
+    animation: bounce 1.6s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+  .envelope-wrap { perspective: 900px; }
+  .envelope {
+    position: relative;
+    width: clamp(210px, 68vw, 260px);
+    height: clamp(135px, 44vw, 170px);
+    cursor: pointer;
+    touch-action: manipulation;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+  .envelope:hover { transform: translateY(-6px) scale(1.03); }
+  .envelope-body {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, var(--rose-bloom), var(--deep-rose));
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(224,65,122,0.35);
+    z-index: 1;
+  }
+  .letter-peek {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 12px;
+    height: 68%;
+    background: var(--cream);
+    border-radius: 10px 10px 4px 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    z-index: 2;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 12px;
+    font-size: 22px;
+    transform: translateY(0);
+    transition: transform 0.8s cubic-bezier(.2,.9,.3,1.3);
+  }
+  .envelope-flap {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 0, 100% 0, 50% 60%);
+    background: linear-gradient(160deg, #ff6fa5, var(--berry));
+    z-index: 3;
+    transform-origin: top center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transition: transform 0.75s cubic-bezier(.4,.2,.2,1), opacity 0.75s ease;
+  }
+  .heart-seal {
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    animation: sealPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes sealPulse {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.15); }
+  }
+  .envelope.opened .envelope-flap { transform: rotateX(180deg); opacity: 0.1; }
+  .envelope.opened .letter-peek { transform: translateY(-50%); }
+
+  /* ===================== LETTER SCREEN ===================== */
+  .letter-card {
+    position: relative;
+    background: var(--cream);
+    width: 100%;
+    max-width: 560px;
+    max-height: 82vh;
+    max-height: 82dvh;
+    overflow-y: auto;
+    border-radius: 20px;
+    padding: 42px 30px 32px;
+    box-shadow: 0 25px 60px rgba(224,65,122,0.3);
+    transform: rotate(-0.6deg);
+    text-align: left;
+  }
+  .letter-card::before, .letter-card::after {
+    content: "🌸";
+    position: absolute;
+    font-size: 26px;
+  }
+  .letter-card::before { top: -13px; left: -13px; }
+  .letter-card::after { bottom: -13px; right: -13px; }
+  .tape {
+    position: absolute;
+    width: 66px;
+    height: 24px;
+    top: -11px;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.7);
+  }
+  .tape-left { left: 26px; transform: rotate(-8deg); }
+  .tape-right { right: 26px; transform: rotate(6deg); }
+  .letter-greeting {
+    font-family: 'Dancing Script', cursive;
+    font-size: 29px;
+    color: var(--berry);
+    margin-bottom: 18px;
+  }
+  .letter-body p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--plum-text);
+    margin-bottom: 14px;
+  }
+  .letter-shout {
+    font-weight: 700;
+    color: #ff2e78;
+    text-align: center;
+    font-size: 15.5px !important;
+    margin: 18px 0 !important;
+  }
+  .letter-signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: 25px;
+    text-align: right;
+    color: #c23d72;
+    margin: 6px 0 26px;
+  }
+  .download-caption {
+    text-align: center;
+    font-size: 12.5px;
+    color: #a8567c;
+    margin-bottom: 8px;
+  }
+  .download-btn {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--rose-bloom), var(--deep-rose));
+    color: white;
+    padding: 16px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 10px 25px rgba(255,93,148,0.4);
+    animation: btnPulse 2s ease-in-out infinite;
+    touch-action: manipulation;
+  }
+  @keyframes btnPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+  }
+
+  .music-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1001;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.75);
+    box-shadow: 0 6px 16px rgba(224,65,122,0.3);
+    font-size: 20px;
+    cursor: pointer;
+    touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+  }
+  .music-toggle:hover { transform: scale(1.08); }
+  .music-toggle:active { transform: scale(0.94); }
+    .letter-card { padding: 34px 24px 26px; }
+    .loader-heart { font-size: 50px; margin-bottom: 14px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html, body { animation: none; }
+    .loader-heart, .heart-seal, .download-btn, .hint-text { animation: none; }
+    .petal, .sparkle, .rising-heart, .confetti-piece { animation-duration: 0.01s !important; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="petals-container"></div>
+
+  <!--
+    ====================================================================
+    FAZLI, GANTI BAGIAN INI KALAU MAU PAKAI MUSIK:
+    Ganti "TARUH_PATH_MUSIK_DISINI.mp3" dengan nama/path file musikmu.
+    Taruh file musiknya di folder yang sama dengan file HTML ini.
+    Musiknya bakal otomatis main pas dia klik tombol "Oke, percepat!"
+    ====================================================================
+  -->
+  <audio id="bgMusic" src="musik.mp3" loop preload="auto"></audio>
+  <button class="music-toggle" id="musicToggle" type="button" title="Musik on/off">🔊</button>
+
+  <!-- ========== LAYAR LOADING ========== -->
+  <div class="screen" id="loadingScreen">
+    <div class="loader-heart">💗</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <p class="loading-text" id="loadingText">Menyiapkan kejutan buat kamu... 🎀</p>
+  </div>
+
+  <!-- ========== POPUP "PERCEPAT LOADING" ========== -->
+  <div class="modal-overlay hidden" id="popupOverlay">
+    <div class="modal-card">
+      <p class="modal-icon">⏳</p>
+      <h2>Ingin segera mempercepat loading?</h2>
+      <p class="modal-sub">Biar gak lama-lama nunggu ya... 🌷</p>
+      <button class="btn-primary" id="popupOkBtn" type="button">Oke, percepat! ⚡</button>
+    </div>
+  </div>
+
+  <!-- ========== LAYAR AMPLOP ========== -->
+  <div class="screen hidden" id="envelopeScreen">
+    <h2 class="screen-title">Ada sesuatu buat kamu... 💌</h2>
+    <div class="envelope-wrap">
+      <div class="envelope" id="envelope">
+        <div class="envelope-body"></div>
+        <div class="letter-peek"><span>💕</span></div>
+        <div class="envelope-flap">
+          <span class="heart-seal">💗</span>
+        </div>
+      </div>
+    </div>
+    <p class="hint-text" id="envelopeHint">Klik amplopnya, sayang 👆</p>
+  </div>
+
+  <!-- ========== LAYAR SURAT ========== -->
+  <div class="screen hidden" id="letterScreen">
+    <div class="letter-card">
+      <div class="tape tape-left"></div>
+      <div class="tape tape-right"></div>
+
+      <p class="letter-greeting">dear nadia sayangku cimikku</p>
+
+      <div class="letter-body">
+        <p>aku tahu kamu sedang mengalami masa masa sulit, dan aku tau km sedang gak mood denganku, aku berharap kamu lebih semangat lagi kedepannya,</p>
+        <p>aku setiap saat akan menunggu cerita darimu, mau aku lelah ataupun enggak, aku selalu menunggu cerita, karena itulah yang bisa menghilangkan segala semua lelahku stressku dan menjernihkan pikiranku, cuman kamu yang bisa mengembalikan semangatku,</p>
+        <p>walau kamu tidak mood denganku aku selalu ingin dengar cerita darimu dan aku akan selalu mood denganmu apapun yang terjadi denganku, aku akan berusaha untuk hadir untuk kamu,</p>
+        <p>aku sayang banget sama kamu, cinta banget sama kamu, walau kamu pasti bosen mendengar kata itu aku akan selalu menyuarakannya untuk bukti bahwa aku masih sangat mencintaimu dan sangat menyayangi mu,</p>
+        <p>aku minta maaf jika akhir akhir ini aku selalu sibuk dan responku lambat ke kamu, aku minta maaf dan aku akui aku jarang chat kamu, kamupun jadi bosan lelah menungguku, aku minta maaf, besok besok aku akan berusaha memperbanyak kehadiranku di kamu,</p>
+        <p>aku sayang kamu aku cinta kamu, aku kangen kamu, dan semua itu bener bener tinggi banget intensitasnya, mungkin sekian suratku, kamu bisa download gambar casing yang kubuat untukmu, kalau ada jelek saran kamu bisa kasih tau aku biar ku revisi ya sayangku,</p>
+        <p class="letter-shout">I LOVEEEE YOUUU SOOO MUCHHH FROM MY DEEPEST HEART AND ALWAYS</p>
+      </div>
+
+      <p class="letter-signature">From Fazli</p>
+
+      <p class="download-caption">🎁 buat casing hp kamu</p>
+      <!--
+        ====================================================================
+        FAZLI, GANTI BAGIAN INI:
+        Ganti "TARUH_PATH_GAMBAR_CASING_DISINI.jpg" dengan path/nama file
+        gambar casingmu. Taruh gambarnya di folder yang sama dengan file
+        HTML ini, contoh: "casing-nadia.jpg"
+        ====================================================================
+      -->
+      <a href="download.jpg" download="download.jpg" target="_blank" rel="noopener" class="download-btn" id="downloadBtn">
+        download disini sayangkuu cimikku <span>💌</span>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Bunga & hati berjatuhan (efek ambient di semua layar) ----------
+    var petalsContainer = document.getElementById('petals-container');
+    var petalEmojis = ['🌸','🌺','🌷','💮','🏵️','💗','💕','🌹'];
+
+    function spawnPetal() {
+      var petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+      var startLeft = Math.random() * 100;
+      var drift = Math.round(Math.random() * 200 - 100) + 'px';
+      var spin = Math.round(Math.random() * 720 - 360) + 'deg';
+      var duration = (6 + Math.random() * 6).toFixed(2);
+      var size = Math.round(16 + Math.random() * 20);
+      petal.style.left = startLeft + 'vw';
+      petal.style.fontSize = size + 'px';
+      petal.style.setProperty('--drift', drift);
+      petal.style.setProperty('--spin', spin);
+      petal.style.animationDuration = duration + 's';
+      petal.style.opacity = (0.6 + Math.random() * 0.4).toFixed(2);
+      petalsContainer.appendChild(petal);
+      petal.addEventListener('animationend', function () { petal.remove(); });
+    }
+
+    for (var i = 0; i < 18; i++) {
+      setTimeout(spawnPetal, i * 90);
+    }
+    setInterval(spawnPetal, 180);
+
+    // ---------- Kelip-kelip sparkle ----------
+    var sparkleEmojis = ['✨','⭐','💫'];
+    function spawnSparkle() {
+      var s = document.createElement('div');
+      s.className = 'sparkle';
+      s.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+      s.style.left = (Math.random() * 100) + 'vw';
+      s.style.top = (Math.random() * 100) + 'vh';
+      s.style.fontSize = Math.round(12 + Math.random() * 14) + 'px';
+      s.style.animationDuration = (1.4 + Math.random() * 1.2).toFixed(2) + 's';
+      petalsContainer.appendChild(s);
+      s.addEventListener('animationend', function () { s.remove(); });
+    }
+    setInterval(spawnSparkle, 350);
+
+    // ---------- Hati melayang naik dari bawah ----------
+    var risingEmojis = ['💗','💕','💖'];
+    function spawnRisingHeart() {
+      var r = document.createElement('div');
+      r.className = 'rising-heart';
+      r.textContent = risingEmojis[Math.floor(Math.random() * risingEmojis.length)];
+      r.style.left = (Math.random() * 100) + 'vw';
+      r.style.fontSize = Math.round(18 + Math.random() * 22) + 'px';
+      r.style.setProperty('--driftx', Math.round(Math.random() * 160 - 80) + 'px');
+      r.style.animationDuration = (7 + Math.random() * 5).toFixed(2) + 's';
+      petalsContainer.appendChild(r);
+      r.addEventListener('animationend', function () { r.remove(); });
+    }
+    setInterval(spawnRisingHeart, 700);
+
+    // ---------- Confetti (dipakai pas surat kebuka) ----------
+    var confettiColors = ['#FF8FB3', '#FF5D94', '#E0417A', '#FFC2D9', '#FFE4EC', '#FFFFFF'];
+    function confettiBurst(count) {
+      count = count || 60;
+      for (var i = 0; i < count; i++) {
+        var c = document.createElement('div');
+        c.className = 'confetti-piece';
+        var w = Math.round(6 + Math.random() * 6);
+        var h = Math.round(10 + Math.random() * 8);
+        c.style.width = w + 'px';
+        c.style.height = h + 'px';
+        c.style.left = (Math.random() * 100) + 'vw';
+        c.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        c.style.setProperty('--cdrift', Math.round(Math.random() * 240 - 120) + 'px');
+        c.style.setProperty('--cspin', Math.round(Math.random() * 540 - 270) + 'deg');
+        c.style.animationDuration = (2.5 + Math.random() * 2).toFixed(2) + 's';
+        petalsContainer.appendChild(c);
+        c.addEventListener('animationend', function () { this.remove(); });
+      }
+    }
+
+    // ---------- Efek burst hati (dipakai pas klik amplop & tombol download) ----------
+    function heartBurst(x, y, count) {
+      count = count || 16;
+      var emojis = ['💕','💗','💖','💓','✨'];
+      for (var i = 0; i < count; i++) {
+        var el = document.createElement('div');
+        el.className = 'burst-heart';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        var angle = Math.random() * Math.PI * 2;
+        var distance = 60 + Math.random() * 100;
+        var dx = Math.round(Math.cos(angle) * distance) + 'px';
+        var dy = Math.round(Math.sin(angle) * distance) + 'px';
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        el.style.setProperty('--dx', dx);
+        el.style.setProperty('--dy', dy);
+        el.style.fontSize = Math.round(14 + Math.random() * 14) + 'px';
+        document.body.appendChild(el);
+        el.addEventListener('animationend', function () { this.remove(); });
+      }
+    }
+
+    // ---------- Ganti layar ----------
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(function (s) { s.classList.add('hidden'); });
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    // ---------- Logika loading ----------
+    var progressFill = document.getElementById('progressFill');
+    var loadingText = document.getElementById('loadingText');
+    var messages = [
+      'Menyiapkan kejutan buat kamu... 🎀',
+      'Sabar ya sayangku... 💕',
+      'Lagi packing rasa kangen... 📦',
+      'Bentar lagi kok, cimikku... 🌸',
+      'Loading rasa sayang, agak lama dikit ya... 💗'
+    ];
+    var msgIndex = 0;
+    var msgInterval = setInterval(function () {
+      loadingText.style.opacity = 0;
+      setTimeout(function () {
+        msgIndex = (msgIndex + 1) % messages.length;
+        loadingText.textContent = messages[msgIndex];
+        loadingText.style.opacity = 1;
+      }, 300);
+    }, 3200);
+
+    setTimeout(function () { progressFill.style.width = '90%'; }, 150);
+
+    setTimeout(function () {
+      document.getElementById('popupOverlay').classList.remove('hidden');
+    }, 20000);
+
+    document.getElementById('popupOkBtn').addEventListener('click', function () {
+      document.getElementById('popupOverlay').classList.add('hidden');
+      progressFill.style.transition = 'width 0.7s ease-out';
+      progressFill.style.width = '100%';
+      var music = document.getElementById('bgMusic');
+      music.volume = 0.6;
+      music.play().catch(function (err) { console.log('Autoplay diblokir/gagal:', err.message); });
+      setTimeout(function () {
+        clearInterval(msgInterval);
+        showScreen('envelopeScreen');
+      }, 750);
+    });
+
+    // ---------- Tombol musik on/off ----------
+    var musicToggle = document.getElementById('musicToggle');
+    var bgMusic = document.getElementById('bgMusic');
+    var musicOn = true;
+    musicToggle.addEventListener('click', function () {
+      musicOn = !musicOn;
+      if (musicOn) {
+        bgMusic.play().catch(function (err) { alert('Musik gagal main: ' + err.message); });
+        musicToggle.textContent = '🔊';
+      } else {
+        bgMusic.pause();
+        musicToggle.textContent = '🔇';
+      }
+    });
+    bgMusic.addEventListener('error', function () {
+      var codeMap = {1:'file dibatalkan',2:'masalah jaringan',3:'format file rusak/gak didukung',4:'file gak ketemu / path salah'};
+      var err = bgMusic.error;
+      var reason = err ? (codeMap[err.code] || ('kode error ' + err.code)) : 'gak diketahui';
+      alert('Musik gagal dimuat. Kemungkinan: ' + reason + '. Cek nama file "' + bgMusic.getAttribute('src') + '" harus persis sama dengan file musik yang ditaruh di folder yang sama.');
+    });
+
+    // ---------- Interaksi amplop ----------
+    var envelope = document.getElementById('envelope');
+    var envelopeHint = document.getElementById('envelopeHint');
+    var envelopeOpened = false;
+
+    envelope.addEventListener('click', function (e) {
+      if (!envelopeOpened) {
+        envelope.classList.add('opened');
+        envelopeOpened = true;
+        heartBurst(e.clientX, e.clientY, 28);
+        envelopeHint.textContent = 'Klik kertasnya buat baca suratnya 💌';
+      } else {
+        showScreen('letterScreen');
+        confettiBurst(70);
+        heartBurst(window.innerWidth / 2, window.innerHeight * 0.15, 18);
+      }
+    });
+
+    // ---------- Burst pas tombol download diklik ----------
+    document.getElementById('downloadBtn').addEventListener('click', function (e) {
+      heartBurst(e.clientX, e.clientY, 24);
+    });
+  </script>
+</body>
+</html>
